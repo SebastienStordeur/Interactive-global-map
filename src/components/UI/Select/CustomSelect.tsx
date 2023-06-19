@@ -1,28 +1,29 @@
 import { FC, useEffect, useRef } from "react";
 import { useState } from "react";
 
-const List: FC = () => {
+interface CustomSelectProps {
+  options: { label: string; value: string }[];
+  category: string;
+}
+
+const CustomSelect: FC<CustomSelectProps> = ({ options, category }) => {
   const [isOpen, setisOpen] = useState(false);
   const [optionSelected, setOptionSelected] = useState<null | string>(null);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  const options = [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-  ];
+  console.log(category);
 
   const toggleList = () => setisOpen(!isOpen);
   const handleSelect = (value: string) => {
     setOptionSelected(value);
-    toggleList();
+    setisOpen(false);
   };
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        toggleList();
+        setisOpen(false);
       }
     };
 
@@ -48,4 +49,4 @@ const List: FC = () => {
   );
 };
 
-export default List;
+export default CustomSelect;
