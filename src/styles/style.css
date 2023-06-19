@@ -16,3 +16,18 @@
   height: 1000px;
   overflow: hidden;
 }
+
+/****** CUSTOM SELECT ******/
+.custom-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: bisque;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
+.option:hover {
+  background-color: blue;
+}
