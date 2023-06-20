@@ -6,6 +6,8 @@ import DensityLayer from "./Layers/DensityLayer";
 import popData from "../../data/world-population.geo.json";
 import useEffect from 'react';
  */
+import popData from "../../data/country-by-population-density.json";
+
 interface MapProps {
   coordinate?: number[];
 }
@@ -37,7 +39,7 @@ const Map: FC<MapProps> = ({ coordinate }) => {
       style={{ height: "100%", width: "100%", marginTop: "150px" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {geoData && <DensityLayer geoData={geoData} popData={popData} />}
+      {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
     </MapContainer>
   );
 };

@@ -14,14 +14,17 @@ interface GeoData {
   };
 }
 
+interface PopulationData {
+  country: string;
+  density: number;
+}
+
 interface DensityLayerProps {
   geoData: {
     type: string;
     features: /* GeoData[]; */ any[];
   };
-  popData: {
-    [key: string]: number;
-  };
+  popData: PopulationData[];
 }
 
 const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
@@ -30,36 +33,46 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
 
   useEffect(() => {
     if (geoData && popData && d3Container.current) {
-      const projectPoint = (lon: number, lat: number) => {
-        let point = map.latLngToLayerPoint(new LatLng(lat, lon));
-        (this as any).stream.point(point.x, point.y);
-      };
-
       function getPopulationDensity(feature: GeoData): number {
-        return popData[feature.properties.name] ?? 0;
+        const countryData = popData.find((data: { country: string; density: number }) => data.country === feature.properties.NAME);
+        return countryData ? +countryData.density.toFixed(2) : 0;
       }
+
       const svg = d3.select(d3Container.current);
 
-      // Create D3 geoPath
-      let transform = d3.geoTransform({ point: projectPoint });
+      // create D3 geoPath
+      const transform = d3.geoTransform({
+        point: function (x, y) {
+          const point = map.latLngToLayerPoint(new LatLng(y, x));
+          this.stream.point(point.x, point.y);
+        },
+      });
+      console.log("TRANSFORM", transform);
       let d3path = d3.geoPath().projection(transform);
 
-      let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(Object.values(popData), (d: any) => d)]);
+      let colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, d3.max(Object.values(popData), (d: any) => d)]);
 
       const update = svg.selectAll("path").data(geoData.features);
+
+      console.log("Data to be used for paths:", geoData.features);
 
       //new paths
       update
         .enter()
         .append("path")
-        .attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)) || 0);
+        .attr("fill", (d: GeoData) => {
+          const color = colorScale(getPopulationDensity(d));
+          console.log(`Color for ${d.properties.NAME}:`, color);
+          return color;
+        });
 
       //update existing paths
-      update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)) || 0);
+      update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)));
 
       function updatePaths() {
         update.attr("d", (d) => d3path(d));
       }
+
       map.on("moveend", updatePaths);
       updatePaths();
     }
