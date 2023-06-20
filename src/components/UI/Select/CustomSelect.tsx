@@ -9,7 +9,6 @@ interface CustomSelectProps {
 const CustomSelect: FC<CustomSelectProps> = ({ options, category }) => {
   const [isOpen, setisOpen] = useState(false);
   const [optionSelected, setOptionSelected] = useState<null | string>(null);
-
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   console.log(category);
@@ -35,15 +34,17 @@ const CustomSelect: FC<CustomSelectProps> = ({ options, category }) => {
 
   return (
     <div className="custom-list" ref={dropdownRef}>
-      <div onClick={toggleList}>{optionSelected ? optionSelected : "Select an option"}</div>
+      <div className="main-entry" onClick={toggleList}>
+        {optionSelected ? optionSelected : "Select an option"}
+      </div>
       {isOpen && (
-        <div>
+        <ul className="options-container" aria-hidden="true">
           {options.map((option) => (
-            <div key={option.value} onClick={() => handleSelect(option.value)} className="option">
+            <li key={option.value} onClick={() => handleSelect(option.value)} className="option">
               {option.value}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

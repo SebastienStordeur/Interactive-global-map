@@ -25,11 +25,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: bisque;
+  background-color: rebeccapurple;
   width: 150px;
-  height: 150px;
+  height: 40px;
+  border-radius: 16px;
   cursor: pointer;
+  -webkit-box-shadow: -5px -1px 15px -8px rgba(0, 0, 0, 0.64);
+  box-shadow: -5px -1px 15px -8px rgba(0, 0, 0, 0.64);
 }
+
+.main-entry {
+  padding: 14px;
+}
+
 .option:hover {
   background-color: blue;
 }
