@@ -49,7 +49,14 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
       });
 
       let d3path = d3.geoPath().projection(transform);
-      let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(popData, (d: any) => d.density)]);
+      //let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(popData, (d: any) => d.density)]);
+      /*      let maxDensity = d3.quantile(popData.map((d) => d.density).sort(d3.ascending), 0.95);
+      let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxDensity]); */
+
+      //let colorScale = d3.scaleThreshold<number, string>().domain([0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2]).range(d3.schemeOrRd[11]);
+      let densities = popData.map((d) => d.density).filter((density): density is number => density !== undefined);
+      let maxDensity = d3.quantile(densities.sort(d3.ascending), 0.95) || 0;
+      let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxDensity]);
 
       const update = svg.selectAll("path").data(geoData.features);
 
@@ -60,14 +67,14 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
         .enter()
         .append("path")
         .attr("fill", (d: GeoData) => {
-          const color = "red"; /* colorScale(getPopulationDensity(d)); */
+          const color = colorScale(getPopulationDensity(d));
           console.log(`Color for ${d.properties.NAME}:`, color);
           return color;
         });
 
       //update existing paths
-      //update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)));
-      update.attr("fill", "red");
+      update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)));
+      //update.attr("fill", "red");
 
       function updatePaths() {
         update.attr("d", (d) => d3path(d));
@@ -78,7 +85,7 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
     }
   }, [map, geoData, popData, d3Container.current]);
 
-  return <svg ref={d3Container} />;
+  return <svg ref={d3Container} className="layer" />;
 };
 
 export default DensityLayer;
