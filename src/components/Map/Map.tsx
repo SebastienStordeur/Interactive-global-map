@@ -2,19 +2,15 @@ import { FC, useEffect, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import DensityLayer from "./Layers/DensityLayer";
-/* import geoData from "../../data/world-population.geo.geojson";
-import popData from "../../data/world-population.geo.json";
-import useEffect from 'react';
- */
 import popData from "../../data/country-by-population-density.json";
 
 interface MapProps {
-  coordinate?: number[];
+  coordinate: number[];
 }
 
 const Map: FC<MapProps> = ({ coordinate }) => {
   const [geoData, setGeoData] = useState<any>(null);
-  const center = [51.505, -0.09];
+  const center: [number, number] = coordinate.length === 2 ? [coordinate[0], coordinate[1]] : [51.505, -0.09];
 
   useEffect(() => {
     fetch("/data/world-population.geo.geojson")
@@ -30,14 +26,7 @@ const Map: FC<MapProps> = ({ coordinate }) => {
   }, []);
 
   return (
-    <MapContainer
-      center={coordinate || center}
-      zoom={2}
-      scrollWheelZoom={true}
-      minZoom={2}
-      maxZoom={6}
-      style={{ height: "100%", width: "100%", marginTop: "150px" }}
-    >
+    <MapContainer center={center} zoom={2} scrollWheelZoom={true} minZoom={2} maxZoom={6} style={{ height: "100%", width: "100%", marginTop: "150px" }}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
     </MapContainer>

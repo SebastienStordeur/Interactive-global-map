@@ -47,10 +47,9 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
           this.stream.point(point.x, point.y);
         },
       });
-      console.log("TRANSFORM", transform);
-      let d3path = d3.geoPath().projection(transform);
 
-      let colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, d3.max(Object.values(popData), (d: any) => d)]);
+      let d3path = d3.geoPath().projection(transform);
+      let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(popData, (d: any) => d.density)]);
 
       const update = svg.selectAll("path").data(geoData.features);
 
@@ -61,13 +60,14 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
         .enter()
         .append("path")
         .attr("fill", (d: GeoData) => {
-          const color = colorScale(getPopulationDensity(d));
+          const color = "red"; /* colorScale(getPopulationDensity(d)); */
           console.log(`Color for ${d.properties.NAME}:`, color);
           return color;
         });
 
       //update existing paths
-      update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)));
+      //update.attr("fill", (d: GeoData) => colorScale(getPopulationDensity(d)));
+      update.attr("fill", "red");
 
       function updatePaths() {
         update.attr("d", (d) => d3path(d));

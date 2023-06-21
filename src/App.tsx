@@ -12,7 +12,7 @@ function App() {
     <main id="main" className="main-container">
       <CustomSelect options={options} category="test" />
       <section id="map-container" className="map-container">
-        <Map />
+        <Map coordinate={[51.505, -0.09]} />
       </section>
     </main>
   );

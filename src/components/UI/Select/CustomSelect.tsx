@@ -11,8 +11,6 @@ const CustomSelect: FC<CustomSelectProps> = ({ options, category }) => {
   const [optionSelected, setOptionSelected] = useState<null | string>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  console.log(category);
-
   const toggleList = () => setisOpen(!isOpen);
   const handleSelect = (value: string) => {
     setOptionSelected(value);
