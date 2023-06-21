@@ -54,16 +54,12 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
       let colorScale = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxDensity]);
 
       const update = svg.selectAll("path").data(geoData.features);
-
-      console.log("Data to be used for paths:", geoData.features);
-
       //new paths
       update
         .enter()
         .append("path")
         .attr("fill", (d: GeoData) => {
           const color = colorScale(getPopulationDensity(d));
-          console.log(`Color for ${d.properties.NAME}:`, color);
           return color;
         });
 
@@ -76,6 +72,10 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
 
       map.on("moveend", updatePaths);
       updatePaths();
+
+      return () => {
+        map.off("moveend", updatePaths);
+      };
     }
   }, [map, geoData, popData, d3Container.current]);
 

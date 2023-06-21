@@ -26,8 +26,17 @@ const Map: FC<MapProps> = ({ coordinate }) => {
   }, []);
 
   return (
-    <MapContainer center={center} zoom={2} scrollWheelZoom={false} minZoom={2} maxZoom={6} zoomControl={false} style={{ height: "100%", width: "100%" }}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <MapContainer
+      center={center}
+      zoom={2}
+      scrollWheelZoom={true}
+      minZoom={2}
+      maxZoom={6}
+      zoomControl={true}
+      dragging={false}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
     </MapContainer>
   );
