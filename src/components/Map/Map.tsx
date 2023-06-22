@@ -3,6 +3,8 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import DensityLayer from "./Layers/DensityLayer";
 import popData from "../../data/country-by-population-density.json";
+import temperaturesData from "../../data/country-by-yearly-average-temperature.json";
+import TemperatureLayer from "./Layers/TemperatureLayer";
 
 interface MapProps {
   coordinate: number[];
@@ -38,7 +40,8 @@ const Map: FC<MapProps> = ({ coordinate }) => {
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {layerActive && geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
+      {/* {layerActive && geoData && popData && <DensityLayer geoData={geoData} popData={popData} />} */}
+      {temperaturesData && geoData && <TemperatureLayer geoData={geoData} tempData={temperaturesData} />}
     </MapContainer>
   );
 };
