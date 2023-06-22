@@ -10,6 +10,7 @@ interface MapProps {
 
 const Map: FC<MapProps> = ({ coordinate }) => {
   const [geoData, setGeoData] = useState<any>(null);
+  const [layerActive, setLayerActive] = useState(false);
   const center: [number, number] = coordinate.length === 2 ? [coordinate[0], coordinate[1]] : [51.505, -0.09];
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Map: FC<MapProps> = ({ coordinate }) => {
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
+      {layerActive && geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
     </MapContainer>
   );
 };
