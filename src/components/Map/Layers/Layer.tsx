@@ -1,7 +1,7 @@
-import React from "react";
+import { FC } from "react";
 
-const Layer = () => {
-  return <div>Layer</div>;
+const Layer: FC = () => {
+  return <svg className="layer" />;
 };
 
 export default Layer;

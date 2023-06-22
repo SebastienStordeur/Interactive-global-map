@@ -1,7 +1,7 @@
-import React from "react";
+import { FC } from "react";
 
-const GlobalPopulationLayer = () => {
-  return <div>GlobalPopulationLayer</div>;
+const GlobalPopulationLayer: FC = () => {
+  return <svg className="layer" />;
 };
 
 export default GlobalPopulationLayer;
