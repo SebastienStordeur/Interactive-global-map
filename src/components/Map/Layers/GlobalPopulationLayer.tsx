@@ -3,10 +3,28 @@ import { LatLng } from "leaflet";
 import { FC, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 
+interface GeoJsonFeature {
+  geometries: d3.GeoGeometryObjects[];
+  geometry: {
+    coordinates: number[][][];
+    type: string;
+  };
+  id: number;
+  properties: {
+    NAME: string;
+    ISO_3_CODE: string;
+    ISO_2_CODE: string;
+    AREA: string;
+    NAME_1: string;
+    [key: string]: string;
+  };
+  type: string;
+}
+
 interface GeoData {
   type: string;
   properties: {
-    [key: string]: any;
+    [key: string]: string;
   };
   geometry: {
     type: string;
@@ -22,12 +40,14 @@ interface PopulationData {
 interface PopulationLayerProps {
   geoData: {
     type: string;
-    features: any[];
+    /* features: any[]; */
+    features: GeoJsonFeature[];
   };
   populationData: PopulationData[];
 }
 
 const GlobalPopulationLayer: FC<PopulationLayerProps> = ({ geoData, populationData }) => {
+  console.log(geoData);
   const map = useMap();
   const d3Container = useRef<SVGSVGElement | null>(null);
 
