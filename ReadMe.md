@@ -26,9 +26,9 @@ The data visualized in the map is sourced from various global databases. For det
 
 Dataset :
 
-- Density per country [!https://github.com/samayo/country-json/blob/master/src/country-by-population-density.json]
-- Population per country [!https://github.com/samayo/country-json/blob/master/src/country-by-population.json]
-- Average temperature per country [!https://github.com/samayo/country-json/blob/master/src/country-by-yearly-average-temperature.json]
+- [Density per country](https://github.com/samayo/country-json/blob/master/src/country-by-population-density.json)
+- [Population per country](https://github.com/samayo/country-json/blob/master/src/country-by-population.json)
+- [Average temperature per country](https://github.com/samayo/country-json/blob/master/src/country-by-yearly-average-temperature.json)
 
 ## Customizing the Map
 
