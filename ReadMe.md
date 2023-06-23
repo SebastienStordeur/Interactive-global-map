@@ -24,6 +24,12 @@ The project is implemented with React and TypeScript and makes use of the D3.js 
 
 The data visualized in the map is sourced from various global databases. For details, see the specific data files under the `data` directory.
 
+Dataset :
+
+- Density per country [!https://github.com/samayo/country-json/blob/master/src/country-by-population-density.json]
+- Population per country [!https://github.com/samayo/country-json/blob/master/src/country-by-population.json]
+- Average temperature per country [!https://github.com/samayo/country-json/blob/master/src/country-by-yearly-average-temperature.json]
+
 ## Customizing the Map
 
 The colors used for the different layers can be customized by adjusting the relevant color scales in the D3.js code. Additionally, you can select which layers to display using the layer selection interface.
