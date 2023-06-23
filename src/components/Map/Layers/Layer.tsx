@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+import { LatLng } from "leaflet";
 import { FC, memo, useRef, useEffect } from "react";
 import { useMap } from "react-leaflet";
 
@@ -57,7 +59,43 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
     return countryData && countryData[type] ? +countryData[type]! : 0;
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    function updateLayer() {
+      const svg = d3.select(d3Container.current);
+      const transform = d3.geoTransform({
+        point: function (x, y) {
+          const point = map.latLngToLayerPoint(new LatLng(y, x));
+          this.stream.point(point.x, point.y);
+        },
+      });
+
+      const d3Path = d3.geoPath().projection(transform);
+      const displayableDatas = data.map((t) => t[type]).filter((desiredData): desiredData is number => desiredData !== null);
+      const maxData = d3.quantile(displayableDatas.sort(d3.ascending), 0.85) || 0; //TODO ADJUST value
+      const colorScale = d3.scaleSequential(d3.interpolateTurbo).domain([0, maxData]);
+
+      const update = svg.selectAll("path").data(geoData.features);
+      update
+        .enter()
+        .append("path")
+        .attr("fill", (geoData: GeoData) => {
+          const color = colorScale(getDatas(geoData));
+          return color;
+        });
+
+      function updatePaths() {
+        update.attr("d", (d) => d3Path(d));
+      }
+
+      map.on("moveend", updatePaths);
+      updatePaths();
+
+      return () => {
+        map.off("moveend", updatePaths);
+      };
+    }
+    updateLayer();
+  }, []);
 
   return <svg ref={d3Container} className="layer" />;
 };

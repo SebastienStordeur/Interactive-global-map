@@ -67,7 +67,7 @@ const GlobalPopulationLayer: FC<PopulationLayerProps> = ({ geoData, populationDa
 
     const d3Path = d3.geoPath().projection(transform);
     let populations = populationData.map((t) => t.population).filter((pop): pop is number => pop !== null);
-    let maxPopulation = d3.quantile(populations.sort(d3.ascending), 0.95) || 0;
+    let maxPopulation = d3.quantile(populations.sort(d3.ascending), 0.99) || 0;
     let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxPopulation]);
 
     const update = svg.selectAll("path").data(geoData.features);
