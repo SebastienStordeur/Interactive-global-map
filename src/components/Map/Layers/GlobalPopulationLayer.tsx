@@ -1,4 +1,5 @@
-import d3 from "d3";
+import * as d3 from "d3";
+import { LatLng } from "leaflet";
 import { FC, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 
@@ -32,17 +33,46 @@ const GlobalPopulationLayer: FC<PopulationLayerProps> = ({ geoData, populationDa
 
   useEffect(() => {
     function getPopulationPerCountry(feature: GeoData): number {
-      const countryData = populationData.find((data: { country: String; population: number }) => {
-        data.country === feature.properties.NAME;
-      });
+      const countryData = populationData.find((data: { country: string; population: number }) => data.country === feature.properties.NAME);
       return countryData ? +countryData.population : 0;
     }
 
     const svg = d3.select(d3Container.current);
-    const transform = d3.geoTransform({});
-  }, []);
+    const transform = d3.geoTransform({
+      point: function (x, y) {
+        const point = map.latLngToLayerPoint(new LatLng(y, x));
+        this.stream.point(point.x, point.y);
+      },
+    });
 
-  return <svg className="layer" />;
+    const d3Path = d3.geoPath().projection(transform);
+    let populations = populationData.map((t) => t.population).filter((pop): pop is number => pop !== null);
+    let maxPopulation = d3.quantile(populations.sort(d3.ascending), 0.95) || 0;
+    let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxPopulation]);
+
+    const update = svg.selectAll("path").data(geoData.features);
+    update
+      .enter()
+      .append("path")
+      .attr("fill", (data: GeoData) => {
+        const color = colorScale(getPopulationPerCountry(data));
+        console.log(color);
+        return color;
+      });
+
+    function updatePaths() {
+      update.attr("d", (d) => d3Path(d));
+    }
+
+    map.on("moveend", updatePaths);
+    updatePaths();
+
+    return () => {
+      map.off("moveend", updatePaths);
+    };
+  }, [map, geoData, populationData, d3Container.current]);
+
+  return <svg ref={d3Container} className="layer" />;
 };
 
 export default GlobalPopulationLayer;
