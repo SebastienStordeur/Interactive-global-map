@@ -24,7 +24,7 @@ The project is implemented with React and TypeScript and makes use of the D3.js 
 
 The data visualized in the map is sourced from various global databases. For details, see the specific data files under the `data` directory.
 
-Dataset :
+Datasets :
 
 - [Density per country](https://github.com/samayo/country-json/blob/master/src/country-by-population-density.json)
 - [Population per country](https://github.com/samayo/country-json/blob/master/src/country-by-population.json)

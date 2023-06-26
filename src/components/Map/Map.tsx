@@ -43,11 +43,8 @@ const Map: FC<MapProps> = ({ coordinate }) => {
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {/* {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />} */}
-      {/*  {temperaturesData && geoData && <TemperatureLayer geoData={geoData} tempData={temperaturesData} />} */}
-      {geoData && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
-
-      {/* {geoData && globalPopulationData && <GlobalPopulationLayer geoData={geoData} populationData={globalPopulationData} />} */}
+      {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
+      {/* {geoData && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />} */}
     </MapContainer>
   );
 };
