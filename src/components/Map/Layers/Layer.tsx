@@ -82,6 +82,7 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
         .append("path")
         .attr("fill", (geoData: GeoData) => {
           const color = colorScale(getDatas(geoData));
+          console.log(color);
           return color;
         });
 
