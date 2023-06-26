@@ -98,7 +98,7 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
       };
     }
     updateLayer();
-  }, []);
+  }, [map, geoData, data]);
 
   return <svg ref={d3Container} className="layer" />;
 };
