@@ -77,6 +77,7 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
       const colorScale = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxData]);
 
       const update = svg.selectAll("path").data(geoData.features);
+      console.log(update);
       update
         .enter()
         .append("path")
