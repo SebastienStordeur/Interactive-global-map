@@ -7,6 +7,7 @@ import temperaturesData from "../../data/country-by-yearly-average-temperature.j
 import globalPopulationData from "../../data/country-by-population.json";
 
 import Layer from "./Layers/Layer";
+import DensityLayer from "./Layers/DensityLayer";
 
 interface MapProps {
   coordinate: number[];
@@ -23,13 +24,9 @@ const Map: FC<MapProps> = ({ coordinate, layer }) => {
   useEffect(() => {
     fetch("/data/world-population.geo.geojson")
       .then((response) => {
-        console.log(response);
         return response.json();
       })
-      .then((data) => {
-        console.log("DATA", data);
-        setGeoData(data);
-      })
+      .then((data) => setGeoData(data))
       .catch((error) => console.log(error));
   }, []);
 
@@ -47,7 +44,8 @@ const Map: FC<MapProps> = ({ coordinate, layer }) => {
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {geoData && layer.layer === "temperature" && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
       {geoData && layer.layer === "population" && globalPopulationData && <Layer geoData={geoData} data={globalPopulationData} type="population" />}
-      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="population" />}
+      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="density" />}
+      {/* <DensityLayer geoData={geoData} popData={densityData} /> */}
     </MapContainer>
   );
 };

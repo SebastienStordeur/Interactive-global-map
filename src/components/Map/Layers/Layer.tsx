@@ -35,7 +35,7 @@ interface GeoData {
 interface Data {
   country: string;
   population?: number;
-  density?: number | null;
+  density?: number;
   temperature?: number | null;
 }
 
@@ -71,8 +71,9 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
 
       const d3Path = d3.geoPath().projection(transform);
       const displayableDatas = data.map((t) => t[type]).filter((desiredData): desiredData is number => desiredData !== null);
-      const maxData = d3.quantile(displayableDatas.sort(d3.ascending), 0.85) || 0; //TODO ADJUST value
-      const colorScale = d3.scaleSequential(d3.interpolateTurbo).domain([0, maxData]);
+
+      const maxData = d3.quantile(displayableDatas.sort(d3.ascending), type === "population" ? 0.95 : 0.85) || 0; //TODO ADJUST value
+      const colorScale = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxData]);
 
       const update = svg.selectAll("path").data(geoData.features);
       update
