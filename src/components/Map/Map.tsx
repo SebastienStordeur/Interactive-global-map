@@ -7,7 +7,6 @@ import temperaturesData from "../../data/country-by-yearly-average-temperature.j
 import globalPopulationData from "../../data/country-by-population.json";
 
 import Layer from "./Layers/Layer";
-import TemperatureLayer from "./Layers/TemperatureLayer";
 
 interface MapProps {
   coordinate: number[];
@@ -42,10 +41,10 @@ const Map: FC<MapProps> = ({ coordinate, layer }) => {
       style={{ height: "85%", width: "75%", margin: "auto", marginTop: "40px" }}
     >
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {/*       {geoData && layer.layer === "temperature" && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
+      {geoData && layer.layer === "temperature" && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
       {geoData && layer.layer === "population" && globalPopulationData && <Layer geoData={geoData} data={globalPopulationData} type="population" />}
-      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="density" />} */}
-      {geoData && temperaturesData && <TemperatureLayer geoData={geoData} tempData={temperaturesData} />}
+      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="density" />}
+      {/* {geoData && temperaturesData && <TemperatureLayer geoData={geoData} tempData={temperaturesData} />} */}
     </MapContainer>
   );
 };
