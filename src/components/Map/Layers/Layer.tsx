@@ -51,7 +51,7 @@ interface LayerProps {
 type DataProperty = "temperature" | "density" | "population";
 
 const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
-  console.log(data);
+  console.log(geoData);
   const map = useMap();
   const d3Container = useRef<SVGSVGElement | null>(null);
 
@@ -82,7 +82,6 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
         .append("path")
         .attr("fill", (geoData: GeoData) => {
           const color = colorScale(getDatas(geoData));
-          console.log(color);
           return color;
         });
 
