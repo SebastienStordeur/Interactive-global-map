@@ -60,7 +60,7 @@ const TemperatureLayer: FC<TemperatureLayerProps> = ({ geoData, tempData }) => {
       });
 
     function updatePaths() {
-      update.attr("d", (d) => d3path(d));
+      update.attr("d", d3path);
     }
 
     map.on("moveend", updatePaths);
