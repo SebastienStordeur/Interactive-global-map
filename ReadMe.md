@@ -10,7 +10,9 @@ This project provides an interactive global map that visualizes various data set
 
 - **Temperature**: This layer represents the average yearly temperature of each country.
 
-All layers can be customized in terms of color and can be toggled on or off.
+All layers can be toggled on or off.
+
+![screenshot](./public/Map.PNG)
 
 ## Functionality
 
