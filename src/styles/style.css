@@ -8,30 +8,31 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  padding: 16px;
 }
 
 .map-container {
   position: relative;
-  width: 90%;
-  height: 700px;
-  /*   width: auto;
-  height: auto; */
+  width: 90vw;
+  height: 80vh;
+  margin: 20px auto 0;
   overflow: hidden;
 }
 
 /****** CUSTOM LIST SELECT ******/
-.custom-list {
+.control-layer {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  gap: 32px;
+}
+
+.checkbox {
+  display: flex;
   align-items: center;
-  background-color: rebeccapurple;
-  width: 150px;
-  height: 40px;
-  border-radius: 16px;
-  cursor: pointer;
-  -webkit-box-shadow: -5px -1px 15px -8px rgba(0, 0, 0, 0.64);
-  box-shadow: -5px -1px 15px -8px rgba(0, 0, 0, 0.64);
+}
+
+.label {
+  margin-right: 4px;
 }
 
 .main-entry {

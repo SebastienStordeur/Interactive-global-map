@@ -1,18 +1,39 @@
+import { useState } from "react";
 import Map from "./components/Map/Map";
-import CustomSelect from "./components/UI/Select/CustomSelect";
+
 import "./styles/style.css";
+import Checkbox from "./components/UI/Inputs/Checbox";
 
 function App() {
-  const options = [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-  ];
+  const [layerState, setLayerState] = useState({
+    isVisible: false,
+    layer: null as null | string,
+  });
+
+  const handleLayerChange = (isChecked: boolean, layer: string) => {
+    if (isChecked) {
+      setLayerState({
+        isVisible: true,
+        layer: layer,
+      });
+    } else {
+      setLayerState({
+        isVisible: false,
+        layer: null,
+      });
+    }
+  };
+
   return (
     <main id="main" className="main-container">
-      <CustomSelect options={options} category="test" />
+      <div className="control-layer">
+        <Checkbox label="Population" onChange={(e) => handleLayerChange(e.target.checked, "population")} />
+        <Checkbox label="Density of population" onChange={(e) => handleLayerChange(e.target.checked, "density")} />
+        <Checkbox label="Temperature" onChange={(e) => handleLayerChange(e.target.checked, "temperature")} />
+      </div>
+
       <section id="map-container" className="map-container">
-        <Map coordinate={[51.505, -0.09]} />
+        <Map coordinate={[51.505, -0.09]} layer={layerState} />
       </section>
     </main>
   );

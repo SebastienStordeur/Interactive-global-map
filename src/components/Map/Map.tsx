@@ -1,21 +1,23 @@
 import { FC, useEffect, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import DensityLayer from "./Layers/DensityLayer";
-import popData from "../../data/country-by-population-density.json";
+
+import densityData from "../../data/country-by-population-density.json";
 import temperaturesData from "../../data/country-by-yearly-average-temperature.json";
-import TemperatureLayer from "./Layers/TemperatureLayer";
 import globalPopulationData from "../../data/country-by-population.json";
-import GlobalPopulationLayer from "./Layers/GlobalPopulationLayer";
+
 import Layer from "./Layers/Layer";
 
 interface MapProps {
   coordinate: number[];
+  layer: {
+    isVisible: boolean;
+    layer: string | null;
+  };
 }
 
-const Map: FC<MapProps> = ({ coordinate }) => {
+const Map: FC<MapProps> = ({ coordinate, layer }) => {
   const [geoData, setGeoData] = useState<any>(null);
-  const [layerActive, setLayerActive] = useState(false);
   const center: [number, number] = coordinate.length === 2 ? [coordinate[0], coordinate[1]] : [51.505, -0.09];
 
   useEffect(() => {
@@ -38,13 +40,14 @@ const Map: FC<MapProps> = ({ coordinate }) => {
       scrollWheelZoom={true}
       minZoom={2}
       maxZoom={6}
-      zoomControl={true}
+      zoomControl={false}
       dragging={false}
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", objectFit: "cover" }}
     >
       <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {geoData && popData && <DensityLayer geoData={geoData} popData={popData} />}
-      {/* {geoData && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />} */}
+      {geoData && layer.layer === "temperature" && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
+      {geoData && layer.layer === "population" && globalPopulationData && <Layer geoData={geoData} data={globalPopulationData} type="population" />}
+      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="population" />}
     </MapContainer>
   );
 };
