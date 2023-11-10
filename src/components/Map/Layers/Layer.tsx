@@ -79,8 +79,9 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
         update.attr("d", d3Path);
       }
 
-      map.on("moveend", updatePaths);
       updatePaths();
+      map.on("moveend", updatePaths);
+      /* updatePaths(); */
 
       return () => {
         map.off("moveend", updatePaths);
