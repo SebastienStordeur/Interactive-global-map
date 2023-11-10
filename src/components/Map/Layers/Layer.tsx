@@ -76,13 +76,12 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
         });
 
       function updatePaths() {
-        console.log(d3Path);
+        console.log("DdPATH", d3Path);
         update.attr("d", d3Path);
       }
 
       map.on("moveend", updatePaths);
-      update.attr("d", d3Path);
-
+      updatePaths();
       return () => {
         map.off("moveend", updatePaths);
       };
