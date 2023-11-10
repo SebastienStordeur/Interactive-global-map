@@ -75,9 +75,8 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
           return color;
         });
 
-      console.log(d3Path);
-
       function updatePaths() {
+        console.log(d3Path);
         update.attr("d", d3Path);
       }
 
