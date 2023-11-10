@@ -66,7 +66,7 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
         .domain([0, maxData]);
 
       const update = svg.selectAll("path").data(geoData.features);
-      console.log(update);
+
       update
         .enter()
         .append("path")
@@ -75,13 +75,14 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
           return color;
         });
 
+      console.log(d3Path);
+
       function updatePaths() {
         update.attr("d", d3Path);
       }
 
-      updatePaths();
       map.on("moveend", updatePaths);
-      /* updatePaths(); */
+      update.attr("d", d3Path);
 
       return () => {
         map.off("moveend", updatePaths);
