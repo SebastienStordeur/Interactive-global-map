@@ -45,9 +45,11 @@ const Map: FC<MapProps> = ({ coordinate, layer }) => {
         noWrap={true}
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {geoData && layer.layer === "temperature" && temperaturesData && (
-        <Layer geoData={geoData} data={temperaturesData} type="temperature" />
-      )}
+      {geoData !== null &&
+        layer.layer === "temperature" &&
+        temperaturesData && (
+          <Layer geoData={geoData} data={temperaturesData} type="temperature" />
+        )}
       {geoData && layer.layer === "population" && globalPopulationData && (
         <Layer
           geoData={geoData}
