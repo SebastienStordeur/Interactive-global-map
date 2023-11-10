@@ -39,10 +39,6 @@
   padding: 14px;
 }
 
-.option:hover {
-  background-color: blue;
-}
-
 .layer {
   position: absolute;
   height: 100%;
