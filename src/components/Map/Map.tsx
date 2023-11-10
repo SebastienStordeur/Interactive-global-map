@@ -18,7 +18,8 @@ interface MapProps {
 
 const Map: FC<MapProps> = ({ coordinate, layer }) => {
   const [geoData, setGeoData] = useState<any>(null);
-  const center: [number, number] = coordinate.length === 2 ? [coordinate[0], coordinate[1]] : [51.505, -0.09];
+  const center: [number, number] =
+    coordinate.length === 2 ? [coordinate[0], coordinate[1]] : [51.505, -0.09];
 
   useEffect(() => {
     fetch("/data/world-population.geo.geojson")
@@ -40,11 +41,23 @@ const Map: FC<MapProps> = ({ coordinate, layer }) => {
       dragging={false}
       style={{ height: "85%", width: "75%", margin: "auto", marginTop: "40px" }}
     >
-      <TileLayer noWrap={true} url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {geoData && layer.layer === "temperature" && temperaturesData && <Layer geoData={geoData} data={temperaturesData} type="temperature" />}
-      {geoData && layer.layer === "population" && globalPopulationData && <Layer geoData={geoData} data={globalPopulationData} type="population" />}
-      {geoData && layer.layer === "density" && densityData && <Layer geoData={geoData} data={densityData} type="density" />}
-      {/* {geoData && temperaturesData && <TemperatureLayer geoData={geoData} tempData={temperaturesData} />} */}
+      <TileLayer
+        noWrap={true}
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {geoData && layer.layer === "temperature" && temperaturesData && (
+        <Layer geoData={geoData} data={temperaturesData} type="temperature" />
+      )}
+      {geoData && layer.layer === "population" && globalPopulationData && (
+        <Layer
+          geoData={geoData}
+          data={globalPopulationData}
+          type="population"
+        />
+      )}
+      {geoData && layer.layer === "density" && densityData && (
+        <Layer geoData={geoData} data={densityData} type="density" />
+      )}
     </MapContainer>
   );
 };

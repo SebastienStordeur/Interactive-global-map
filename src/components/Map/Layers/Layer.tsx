@@ -31,7 +31,6 @@ interface LayerProps {
 type DataProperty = "temperature" | "density" | "population";
 
 const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
-  console.log(geoData);
   const map = useMap();
   const d3Container = useRef<SVGSVGElement | null>(null);
 
