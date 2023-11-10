@@ -2,8 +2,9 @@ import { FC, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { useMap } from "react-leaflet";
 import { LatLng } from "leaflet";
+import { GeoData } from "../../../types/types";
 
-interface GeoData {
+/* interface GeoData {
   type: string;
   properties: {
     [key: string]: any;
@@ -12,7 +13,7 @@ interface GeoData {
     type: string;
     coordinates: number[][][];
   };
-}
+} */
 
 interface PopulationData {
   country: string;
@@ -34,7 +35,10 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
   useEffect(() => {
     if (geoData && popData && d3Container.current) {
       function getPopulationDensity(feature: GeoData): number {
-        const countryData = popData.find((data: { country: string; density: number }) => data.country === feature.properties.NAME);
+        const countryData = popData.find(
+          (data: { country: string; density: number }) =>
+            data.country === feature.properties.NAME
+        );
         return countryData ? +countryData.density.toFixed(2) : 0;
       }
 
@@ -49,9 +53,13 @@ const DensityLayer: FC<DensityLayerProps> = ({ geoData, popData }) => {
       });
 
       let d3path = d3.geoPath().projection(transform);
-      let densities = popData.map((d) => d.density).filter((density): density is number => density !== undefined);
+      let densities = popData
+        .map((d) => d.density)
+        .filter((density): density is number => density !== undefined);
       let maxDensity = d3.quantile(densities.sort(d3.ascending), 0.85) || 0;
-      let colorScale = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxDensity]);
+      let colorScale = d3
+        .scaleSequential(d3.interpolateOrRd)
+        .domain([0, maxDensity]);
 
       const update = svg.selectAll("path").data(geoData.features);
       //new paths

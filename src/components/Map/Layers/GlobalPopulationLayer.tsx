@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { LatLng } from "leaflet";
 import { FC, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
+import { GeoData } from "../../../types/types";
 
 interface GeoJsonFeature {
   geometries: d3.GeoGeometryObjects[];
@@ -21,17 +22,6 @@ interface GeoJsonFeature {
   type: string;
 }
 
-interface GeoData {
-  type: string;
-  properties: {
-    [key: string]: string;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
-}
-
 interface PopulationData {
   country: string;
   population: number;
@@ -46,14 +36,20 @@ interface PopulationLayerProps {
   populationData: PopulationData[];
 }
 
-const GlobalPopulationLayer: FC<PopulationLayerProps> = ({ geoData, populationData }) => {
+const GlobalPopulationLayer: FC<PopulationLayerProps> = ({
+  geoData,
+  populationData,
+}) => {
   console.log(geoData);
   const map = useMap();
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
     function getPopulationPerCountry(feature: GeoData): number {
-      const countryData = populationData.find((data: { country: string; population: number }) => data.country === feature.properties.NAME);
+      const countryData = populationData.find(
+        (data: { country: string; population: number }) =>
+          data.country === feature.properties.NAME
+      );
       return countryData ? +countryData.population : 0;
     }
 
@@ -66,9 +62,13 @@ const GlobalPopulationLayer: FC<PopulationLayerProps> = ({ geoData, populationDa
     });
 
     const d3Path = d3.geoPath().projection(transform);
-    let populations = populationData.map((t) => t.population).filter((pop): pop is number => pop !== null);
+    let populations = populationData
+      .map((t) => t.population)
+      .filter((pop): pop is number => pop !== null);
     let maxPopulation = d3.quantile(populations.sort(d3.ascending), 0.99) || 0;
-    let colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxPopulation]);
+    let colorScale = d3
+      .scaleSequential(d3.interpolateReds)
+      .domain([0, maxPopulation]);
 
     const update = svg.selectAll("path").data(geoData.features);
     update

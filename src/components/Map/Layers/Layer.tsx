@@ -2,34 +2,14 @@ import * as d3 from "d3";
 import { LatLng } from "leaflet";
 import { FC, memo, useRef, useEffect } from "react";
 import { useMap } from "react-leaflet";
+import { GeoData, GeoJsonProperties, Geometry } from "../../../types/types";
 
 interface GeoJsonFeature {
   geometries: d3.GeoGeometryObjects[];
-  geometry: {
-    coordinates: number[][][];
-    type: string;
-  };
+  geometry: Geometry;
   id: number;
-  properties: {
-    NAME: string;
-    ISO_3_CODE: string;
-    ISO_2_CODE: string;
-    AREA: string;
-    NAME_1: string;
-    [key: string]: string;
-  };
+  properties: GeoJsonProperties;
   type: string;
-}
-
-interface GeoData {
-  type: string;
-  properties: {
-    [key: string]: string;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
 }
 
 interface Data {
@@ -56,7 +36,9 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   function getDatas(feature: GeoData): number {
-    const countryData = data.find((d: any) => d.country === feature.properties.NAME);
+    const countryData = data.find(
+      (d: any) => d.country === feature.properties.NAME
+    );
     return countryData && countryData[type] ? +countryData[type]! : 0;
   }
 
@@ -71,10 +53,18 @@ const Layer: FC<LayerProps> = ({ geoData, data, type }) => {
       });
 
       const d3Path = d3.geoPath().projection(transform);
-      const displayableDatas = data.map((t) => t[type]).filter((desiredData): desiredData is number => desiredData !== null);
+      const displayableDatas = data
+        .map((t) => t[type])
+        .filter((desiredData): desiredData is number => desiredData !== null);
 
-      const maxData = d3.quantile(displayableDatas.sort(d3.ascending), type === "population" ? 0.95 : 0.85) || 0; //TODO ADJUST value
-      const colorScale = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxData]);
+      const maxData =
+        d3.quantile(
+          displayableDatas.sort(d3.ascending),
+          type === "population" ? 0.95 : 0.85
+        ) || 0; //TODO ADJUST value
+      const colorScale = d3
+        .scaleSequential(d3.interpolateOrRd)
+        .domain([0, maxData]);
 
       const update = svg.selectAll("path").data(geoData.features);
       console.log(update);

@@ -2,17 +2,7 @@ import * as d3 from "d3";
 import { LatLng } from "leaflet";
 import { FC, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
-
-interface GeoData {
-  type: string;
-  properties: {
-    [key: string]: any;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
-}
+import { GeoData } from "../../../types/types";
 
 interface TemperatureData {
   country: string;
@@ -33,7 +23,10 @@ const TemperatureLayer: FC<TemperatureLayerProps> = ({ geoData, tempData }) => {
 
   useEffect(() => {
     function getAverageTemperatures(feature: GeoData): number {
-      const countryData = tempData.find((data: { country: string; temperature: number | null }) => data.country === feature.properties.NAME);
+      const countryData = tempData.find(
+        (data: { country: string; temperature: number | null }) =>
+          data.country === feature.properties.NAME
+      );
       return countryData ? +countryData.temperature! : 0;
     }
 
@@ -46,9 +39,14 @@ const TemperatureLayer: FC<TemperatureLayerProps> = ({ geoData, tempData }) => {
     });
 
     let d3path = d3.geoPath().projection(transform);
-    let temperatures = tempData.map((t) => t.temperature).filter((temperature): temperature is number => temperature !== null);
-    let maxTemperature = d3.quantile(temperatures.sort(d3.ascending), 0.85) || 0;
-    let colorScale = d3.scaleSequential(d3.interpolateTurbo).domain([0, maxTemperature]);
+    let temperatures = tempData
+      .map((t) => t.temperature)
+      .filter((temperature): temperature is number => temperature !== null);
+    let maxTemperature =
+      d3.quantile(temperatures.sort(d3.ascending), 0.85) || 0;
+    let colorScale = d3
+      .scaleSequential(d3.interpolateTurbo)
+      .domain([0, maxTemperature]);
 
     const update = svg.selectAll("path").data(geoData.features);
     update
